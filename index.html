@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booth's Multiplier: Complete Hardware Coprocessor Suite</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="main-container">
+    <h2>Booth's Multiplier: Advanced Hardware Coprocessor Suite</h2>
+
+    <!-- Mode 1: Complex Multiplier Coprocessor -->
+    <div class="card dark-card">
+      <div class="card-header-center">
+        <h3 class="cyan-text">Mode 1: Complex Number Multiplier (4× Booth MAC)</h3>
+        <p class="muted-text">
+          Computes (a + jb) * (c + jd) = (ac - bd) + j(ad + bc) across four parallel Booth multiplier units.
+        </p>
+      </div>
+
+      <div class="inputs-strip">
+        <div class="operand-block">
+          <span class="block-title">Operand 1 (Z_1 = a + jb):</span>
+          <div class="input-row">
+            <label>Real (a):</label>
+            <input type="number" id="real-a" value="7" min="-16" max="15" />
+            <label>Imag (b):</label>
+            <input type="number" id="imag-b" value="-5" min="-16" max="15" />
+          </div>
+        </div>
+
+        <div class="operand-block">
+          <span class="block-title">Operand 2 (Z_2 = c + jd):</span>
+          <div class="input-row">
+            <label>Real (c):</label>
+            <input type="number" id="real-c" value="-9" min="-16" max="15" />
+            <label>Imag (d):</label>
+            <input type="number" id="imag-d" value="4" min="-16" max="15" />
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="executeComplexMultiplication()">
+          ⚡ Run Complex Multiplier
+        </button>
+      </div>
+
+      <div class="grid-4">
+        <div class="sub-card">
+          <h4>ALU Core 1: (a × c)</h4>
+          <div id="mac-1-result"></div>
+        </div>
+        <div class="sub-card">
+          <h4>ALU Core 2: (b × d)</h4>
+          <div id="mac-2-result"></div>
+        </div>
+        <div class="sub-card">
+          <h4>ALU Core 3: (a × d)</h4>
+          <div id="mac-3-result"></div>
+        </div>
+        <div class="sub-card">
+          <h4>ALU Core 4: (b × c)</h4>
+          <div id="mac-4-result"></div>
+        </div>
+      </div>
+
+      <div class="highlight-output" id="complex-final-output"></div>
+      <div id="complex-summary" class="profile-box"></div>
+    </div>
+
+    <!-- Mode 2: 3D Graphics Vertex Transformation Coprocessor -->
+    <div class="card dark-card">
+      <div class="card-header-center">
+        <h3 class="cyan-text">Mode 2: 3D Vertex Transformation Coprocessor (GPU Vertex Shader)</h3>
+        <p class="muted-text">
+          Executes real-time affine matrix-vector multiplication (V' = M * V) across continuous yaw and pitch rotations.
+        </p>
+      </div>
+
+      <div class="inputs-strip">
+        <div class="input-row">
+          <label for="slider-yaw">Yaw (Y-Axis):</label>
+          <input type="range" id="slider-yaw" min="0" max="360" value="45" oninput="handleModelRotation()" />
+          <span id="yaw-display" class="deg-tag">45°</span>
+        </div>
+        <div class="input-row">
+          <label for="slider-pitch">Pitch (X-Axis):</label>
+          <input type="range" id="slider-pitch" min="0" max="360" value="30" oninput="handleModelRotation()" />
+          <span id="pitch-display" class="deg-tag">30°</span>
+        </div>
+        <button class="btn-gpu" onclick="reset3DView()">🔄 Reset Rotation</button>
+      </div>
+
+      <div class="canvases-row">
+        <div class="canvas-panel">
+          <div class="canvas-title">Transformed Wireframe Mesh</div>
+          <canvas id="canvas-3d" width="360" height="230"></canvas>
+        </div>
+        <div class="canvas-panel">
+          <div class="canvas-title">Affine Transformation Matrix (4*4 Matrix)</div>
+          <div id="matrix-display" class="matrix-box"></div>
+        </div>
+      </div>
+
+      <div id="gpu-summary" class="profile-box"></div>
+    </div>
+
+    <!-- Mode 3: IEEE 754 Floating-Point Unit -->
+    <div class="card light-card">
+      <div class="card-header-center">
+        <h3 style="color: #1e40af;">Mode 3: IEEE 754 Floating-Point Unit (FPU)</h3>
+        <p style="color: #64748b; font-size: 13px; margin: 4px 0 0 0;">
+          Decouples Sign (XOR), Exponent (Integer Adder), and Mantissa (Booth Multiplier Core).
+        </p>
+      </div>
+
+      <div class="fpu-controls">
+        <div class="input-row">
+          <label for="float-a">Operand A:</label>
+          <input type="number" id="float-a" value="-3.75" step="0.25" />
+        </div>
+        <div class="input-row">
+          <label for="float-b">Operand B:</label>
+          <input type="number" id="float-b" value="2.5" step="0.25" />
+        </div>
+        <button class="btn-primary" onclick="executeFloatingPointMultiplication()">
+          ⚡ Run FPU Pipeline
+        </button>
+      </div>
+
+      <div class="grid-4">
+        <div class="fpu-stage">
+          <h4>1. Sign Logic (XOR)</h4>
+          <div id="fpu-sign-result"></div>
+        </div>
+        <div class="fpu-stage">
+          <h4>2. Exponent Adder</h4>
+          <div id="fpu-exp-result"></div>
+        </div>
+        <div class="fpu-stage">
+          <h4>3. Mantissa Multiplier (Booth)</h4>
+          <div id="fpu-mantissa-result"></div>
+        </div>
+        <div class="fpu-stage">
+          <h4>4. Packing & Normalization</h4>
+          <div id="fpu-final-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode 4: Educational Hardware Cycle Inspector -->
+    <div class="card light-card">
+      <div class="card-header-center">
+        <h3 style="color: #0f172a;">Mode 4: Single-Core Hardware Register Inspector</h3>
+        <p style="color: #64748b; font-size: 13px; margin: 4px 0 0 0;">
+          Step through registers cycle-by-cycle to verify Booth's state machine (AC, QR, Qn+1, SC).
+        </p>
+      </div>
+
+      <div class="inspector-controls">
+        <label>Multiplicand (BR):</label>
+        <input type="number" id="input-br" value="-7" min="-16" max="15" />
+
+        <label>Multiplier (QR):</label>
+        <input type="number" id="input-qr" value="12" min="-16" max="15" />
+
+        <button class="btn-primary" onclick="initializeSimulation()">Load Registers</button>
+        <button class="btn-secondary" id="btn-next" onclick="stepForward()" disabled>Next Step</button>
+        <button class="btn-reset" onclick="resetVisualizer()">Reset</button>
+      </div>
+
+      <div class="status-box" id="status-display">
+        Enter signed values (-16 to 15) and click <b>Load Registers</b> to begin stepping.
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Cycle</th>
+            <th>Q<sub>n</sub> Q<sub>n+1</sub></th>
+            <th>Operation</th>
+            <th>Accumulator (AC)</th>
+            <th>Multiplier (QR)</th>
+            <th>Q<sub>n+1</sub></th>
+            <th>SC</th>
+          </tr>
+        </thead>
+        <tbody id="trace-table-body"></tbody>
+      </table>
+
+      <div class="result-box" id="result-box"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
